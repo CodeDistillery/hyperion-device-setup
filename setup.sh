@@ -25,7 +25,7 @@ sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,
 echo "$user:$password" | sudo chpasswd
 sudo -H -u $user bash -c 'ssh-keygen -t rsa -b 4096 -N "" -C "$USER@$HOSTNAME" -f /home/$USER/.ssh/id_rsa'
 sudo -H -u $user bash -c 'cat /home/$USER/.ssh/id_rsa.pub'
-read -p "Copy key above and add to Github repo deploy keys. Press enter to continue.."
+read -p "Copy key above and add to Github repo deploy keys and authorized_keys on ssh host. Press enter to continue.."
 
 echo "Cloning repo..."
 sudo -H -u $user bash -c 'git clone git@github.com:CodeDistillery/hyperion-device-node.git /home/$USER/app'
