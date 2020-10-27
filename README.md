@@ -3,3 +3,7 @@
 3. Configure `.env` file
 4. Configure variables in `setup.sh`
 5. `bash setup.sh`
+6. Reboot
+7. Login as new user
+8. `sudo ufw limit OpenSSH && sudo ufw enable`
+9. `sudo deluser -remove-home pi`
