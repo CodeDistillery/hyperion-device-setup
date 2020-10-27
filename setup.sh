@@ -19,7 +19,7 @@ sudo apt install -y ufw libudev-dev libgphoto2-dev nodejs git
 sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
 
 echo "Adding user $user..."
-sudo $hostname # Temporary
+sudo hostname $hostname # Temporary
 sudo adduser --disabled-password --gecos "" $user
 sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi $user
 echo "$user:$password" | sudo chpasswd
