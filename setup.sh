@@ -31,6 +31,9 @@ sudo cp local.json /home/$user/app/config/ && sudo chown $user:$user /home/$user
 sudo npm install -g pm2
 sudo -H -u $user bash -c 'cd /home/$USER/app && npm install'
 
+echo "Installing periodic code updates..."
+echo "*/1 * * * * $user /bin/bash -c 'cd /home/$user/app && /usr/bin/git pull -q origin master'" | sudo tee -a /etc/cron.d/hyperion
+
 echo "Starting up the project..."
 sudo -H -u $user bash -c 'cd /home/$USER/app && pm2 start ecosystem.config.js && pm2 startup'
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u $user --hp /home/$user
