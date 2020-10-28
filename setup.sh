@@ -32,7 +32,7 @@ sudo npm install -g pm2
 sudo -H -u $user bash -c 'cd /home/$USER/app && npm install'
 
 echo "Starting up the project..."
-sudo -H -u $user bash -c 'cd /home/$USER/app && pm2 start && pm2 startup'
+sudo -H -u $user bash -c 'cd /home/$USER/app && pm2 start ecosystem.config.js && pm2 startup'
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u $user --hp /home/$user
 sudo -H -u $user bash -c 'cd /home/$USER/app && pm2 save'
 
