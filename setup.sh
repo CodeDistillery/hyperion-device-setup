@@ -1,8 +1,5 @@
 ##### Set the variables below #####
 
-# Name of this device
-hostname=
-
 # Local user
 user=
 
@@ -15,11 +12,10 @@ echo Running setup...
 
 sudo apt update && sudo apt upgrade -y
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-sudo apt install -y ufw libudev-dev libgphoto2-dev nodejs git
-sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
+sudo apt install -y libudev-dev libgphoto2-dev ufw git nodejs
+sudo ufw limit OpenSSH && sudo ufw enable
 
 echo "Adding user $user..."
-sudo hostname $hostname # Temporary
 sudo adduser --disabled-password --gecos "" $user
 sudo usermod -a -G adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi $user
 echo "$user:$password" | sudo chpasswd
@@ -31,7 +27,7 @@ echo "Cloning repo..."
 sudo -H -u $user bash -c 'git clone git@github.com:CodeDistillery/hyperion-device-node.git /home/$USER/app'
 
 echo "Installing project dependencies..."
-sudo cp .env /home/$user/app/ && sudo chown $user:$user /home/$user/app/.env
+sudo cp local.json /home/$user/app/ && sudo chown $user:$user /home/$user/app/local.json
 sudo npm install -g pm2
 sudo -H -u $user bash -c 'cd /home/$USER/app && npm install'
 
