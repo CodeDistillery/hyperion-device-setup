@@ -27,7 +27,7 @@ echo "Cloning repo..."
 sudo -H -u $user bash -c 'git clone git@github.com:CodeDistillery/hyperion-device-node.git /home/$USER/app'
 
 echo "Installing project dependencies..."
-sudo cp local.json /home/$user/app/ && sudo chown $user:$user /home/$user/app/local.json
+sudo cp local.json /home/$user/app/config/ && sudo chown $user:$user /home/$user/app/config/local.json
 sudo npm install -g pm2
 sudo -H -u $user bash -c 'cd /home/$USER/app && npm install'
 
