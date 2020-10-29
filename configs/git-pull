@@ -1,0 +1,1 @@
+*/1 * * * * <user> /bin/bash -c 'cd /home/<user>/app && /usr/bin/git pull -q origin master'

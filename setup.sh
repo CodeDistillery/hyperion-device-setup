@@ -1,17 +1,20 @@
-##### Set the variables below #####
+echo "Running setup..."
 
-# Local user
-user=
+##### Variables #####
 
-# Local login password, used with reverse ssh tunnel for example
-password=
+echo "Enter local username:"
+read user
+
+echo "Enter local user password:"
+read password
+
+echo "Enter camera token:"
+read token
 
 ###################################
 
-echo "Running setup..."
-
 sudo chmod u+s /sbin/shutdown # Allow reboot without sudo
-sudo cp -f ./lte /etc/network/interfaces.d/
+sudo cp -f configs/lte /etc/network/interfaces.d/
 sudo apt update && sudo apt upgrade -y
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt install -y libudev-dev libgphoto2-dev libqmi-utils ufw git nodejs
@@ -29,17 +32,16 @@ echo "Cloning repo..."
 sudo -H -u $user bash -c 'git clone git@github.com:CodeDistillery/hyperion-device-node.git /home/$USER/app'
 
 echo "Installing project dependencies..."
-sudo cp local.json /home/$user/app/config/ && sudo chown $user:$user /home/$user/app/config/local.json
+sudo cp configs/local.json /home/$user/app/config/ && sudo chown $user:$user /home/$user/app/config/local.json
+sed -i 's,"token": null,"token": "'$token'",' /home/$user/app/config/local.json
 sudo npm install -g pm2
 sudo -H -u $user bash -c 'cd /home/$USER/app && npm install'
 
 echo "Installing periodic code updates..."
-echo "*/1 * * * * $user /bin/bash -c 'cd /home/$user/app && /usr/bin/git pull -q origin master'" | sudo tee -a /etc/cron.d/hyperion
+sudo cp -f configs/git-pull /etc/cron.d/
+sudo sed -i 's,<user>,'$user',g' /etc/cron.d/git-pull
 
 echo "Starting up the project..."
 sudo -H -u $user bash -c 'cd /home/$USER/app && pm2 start ecosystem.config.js && pm2 startup'
 sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u $user --hp /home/$user
 sudo -H -u $user bash -c 'cd /home/$USER/app && pm2 save'
-
-echo "Cleaning up..."
-rm setup.sh && rm local.json
