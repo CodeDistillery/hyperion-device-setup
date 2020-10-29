@@ -1,0 +1,4 @@
+allow-hotplug wwan0
+iface wwan0 inet dhcp
+  pre-up qmicli -d /dev/cdc-wdm0 --dms-set-operating-mode=online
+  pre-up qmicli -d /dev/cdc-wdm0 --wds-start-network=internet --client-no-release-cid

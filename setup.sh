@@ -8,11 +8,13 @@ password=
 
 ###################################
 
-echo Running setup...
+echo "Running setup..."
 
+sudo chmod u+s /sbin/shutdown # Allow reboot without sudo
+sudo cp -f ./lte /etc/network/interfaces.d/
 sudo apt update && sudo apt upgrade -y
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-sudo apt install -y libudev-dev libgphoto2-dev ufw git nodejs
+sudo apt install -y libudev-dev libgphoto2-dev libqmi-utils ufw git nodejs
 sudo ufw limit OpenSSH && sudo ufw enable
 
 echo "Adding user $user..."
