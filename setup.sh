@@ -33,7 +33,7 @@ sudo -H -u $user bash -c 'git clone git@github.com:CodeDistillery/hyperion-devic
 
 echo "Installing project dependencies..."
 sudo cp configs/local.json /home/$user/app/config/ && sudo chown $user:$user /home/$user/app/config/local.json
-sed -i 's,"token": null,"token": "'$token'",' /home/$user/app/config/local.json
+sudo sed -i 's,"token": null,"token": "'$token'",' /home/$user/app/config/local.json
 sudo npm install -g pm2
 sudo -H -u $user bash -c 'cd /home/$USER/app && npm install'
 
