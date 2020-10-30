@@ -1,3 +1,13 @@
+**Preparation:**
+
+Prepare an SD card with Raspberry Pi OS Lite (32-bit)
+
+https://www.raspberrypi.org/downloads/
+
+Add an emtpy file named `ssh` into the boot partition of the SD card
+
+**Install:**
+
 1. `curl -sL https://github.com/CodeDistillery/hyperion-device-setup/archive/master.tar.gz | tar xz`
 2. Configure hostname
    1. `sudo raspi-config`
