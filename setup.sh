@@ -5,6 +5,7 @@ echo "Running setup..."
 read -p "Enter local username: " user
 read -p "Enter local user password: " password
 read -p "Enter camera token: " token
+read -p "Enter rsyslog destination: " rsyslog_dest
 read -p "Enter branch (master): " branch
 
 branch=${branch:-master}
@@ -13,10 +14,22 @@ app_folder=/home/$user/app
 ###################################
 
 sudo chmod u+s /sbin/shutdown # Allow reboot without sudo
-sudo cp -f configs/lte /etc/network/interfaces.d/
+
 sudo apt update && sudo apt upgrade -y
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt install -y libudev-dev libgphoto2-dev libqmi-utils ufw git nodejs
+
+echo "Configuring LTE..."
+sudo cp -f configs/lte /etc/network/interfaces.d/
+sudo systemctl daemon-reload
+sudo service networking reload
+sudo service networking restart
+
+echo "Configuring rsyslog..."
+echo "*.* @$rsyslog_dest" | sudo tee -a /etc/rsyslog.conf
+sudo service rsyslog restart
+
+echo "Configuring firewall..."
 sudo ufw limit OpenSSH && sudo ufw enable
 
 echo "Adding user $user..."
@@ -34,6 +47,7 @@ echo "Installing project dependencies..."
 sudo cp configs/local.json $app_folder/config/ && sudo chown $user:$user $app_folder/config/local.json
 sudo sed -i 's,<token>,'$token',g' $app_folder/config/local.json
 sudo npm install -g pm2
+sudo -H -u $user bash -c 'pm2 install pm2-posix-syslog'
 sudo -H -u $user app_folder=$app_folder bash -c 'cd $app_folder && npm install'
 
 echo "Installing periodic code updates..."
