@@ -13,6 +13,7 @@ Add an emtpy file named `ssh` into the boot partition of the SD card
    1. `sudo raspi-config`
    2. Select Network Options
    3. Select Hostname
+   4. Do not reboot yet
 3. `sudo update-alternatives --set iptables /usr/sbin/iptables-legacy`
 4. `sudo reboot`
 5. `cd hyperion-device-setup-master && bash setup.sh`
