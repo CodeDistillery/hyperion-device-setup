@@ -2,14 +2,11 @@ echo "Running setup..."
 
 ##### Variables #####
 
-echo "Enter local username:"
-read user
-
-echo "Enter local user password:"
-read password
-
-echo "Enter camera token:"
-read token
+read -p "Enter local username: " user
+read -p "Enter local user password: " password
+read -p "Enter camera token: " token
+read -p "Enter branch (master): " branch
+branch=${branch:-master}
 
 ###################################
 
